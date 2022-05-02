@@ -23,6 +23,7 @@ public abstract class MemeParser extends Thread {
         while (true) {
             List<Meme> memeList = parseMemes();
             for (Meme meme : memeList) {
+                meme.setApproved(false);
                 memeService.storeMeme(meme);
             }
             trySleepThread();

@@ -4,22 +4,19 @@ import com.streletsa.memedealer.memestorageservice.model.Image;
 import com.streletsa.memedealer.memestorageservice.model.ImageExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Element;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneOffset;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.Random;
 
 @Slf4j
 public class ImageUtils {
+
 
     public static Optional<Image> getImageFromElement(Element element){
         Optional<Image> imageOptional = Optional.empty();
@@ -57,11 +54,15 @@ public class ImageUtils {
     }
 
     public static void saveImage(Image image) {
+        saveImage(image, "/");
+    }
+
+    public static void saveImage(Image image, String folderPath) {
         try {
             String imageExtension = image.getExtension().name().toLowerCase();
             String imageName = String.valueOf(System.currentTimeMillis());
             String imageFileName = imageName + '.' + imageExtension;
-            File file = new File("/home/andrey/Documents/" + imageFileName);
+            File file = new File(folderPath + imageFileName);
             if (file.createNewFile()){
                 FileOutputStream outputStream = new FileOutputStream(file);
                 outputStream.write(image.getImageByteArray());

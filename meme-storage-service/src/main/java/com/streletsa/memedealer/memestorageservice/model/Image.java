@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.util.Arrays;
 
-@Data
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -14,8 +14,6 @@ import java.util.Arrays;
 @ToString
 public class Image {
 
-    @Id
-    private String id;
     private String url;
     private byte[] imageByteArray;
     private ImageExtension extension;

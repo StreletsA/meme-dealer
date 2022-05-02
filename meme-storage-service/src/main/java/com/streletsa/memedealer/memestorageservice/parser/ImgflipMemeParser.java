@@ -39,7 +39,7 @@ public class ImgflipMemeParser extends MemeParser{
                 if (imageOptional.isPresent()){
                     Image image = imageOptional.get();
                     Long timestamp = System.currentTimeMillis();
-                    ImageUtils.saveImage(image);
+
                     Meme meme = new Meme();
                     meme.setSource(MEME_SOURCE);
                     meme.setImage(image);
