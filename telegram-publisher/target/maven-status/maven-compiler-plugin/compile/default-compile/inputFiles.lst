@@ -1,0 +1,11 @@
+/home/andrey/Development/Projects/meme-dealer/telegram-publisher/src/main/java/com/streletsa/memedealer/tgpublisher/telegram/TgChatBot.java
+/home/andrey/Development/Projects/meme-dealer/telegram-publisher/src/main/java/com/streletsa/memedealer/tgpublisher/model/Meme.java
+/home/andrey/Development/Projects/meme-dealer/telegram-publisher/src/main/java/com/streletsa/memedealer/tgpublisher/subscriber/MemeSubscriber.java
+/home/andrey/Development/Projects/meme-dealer/telegram-publisher/src/main/java/com/streletsa/memedealer/tgpublisher/telegram/MemeDealerBotWorker.java
+/home/andrey/Development/Projects/meme-dealer/telegram-publisher/src/main/java/com/streletsa/memedealer/tgpublisher/model/MemeSource.java
+/home/andrey/Development/Projects/meme-dealer/telegram-publisher/src/main/java/com/streletsa/memedealer/tgpublisher/telegram/TgBotWorker.java
+/home/andrey/Development/Projects/meme-dealer/telegram-publisher/src/main/java/com/streletsa/memedealer/tgpublisher/model/Image.java
+/home/andrey/Development/Projects/meme-dealer/telegram-publisher/src/main/java/com/streletsa/memedealer/tgpublisher/model/ImageExtension.java
+/home/andrey/Development/Projects/meme-dealer/telegram-publisher/src/main/java/com/streletsa/memedealer/tgpublisher/Main.java
+/home/andrey/Development/Projects/meme-dealer/telegram-publisher/src/main/java/com/streletsa/memedealer/tgpublisher/config/AppConfiguration.java
+/home/andrey/Development/Projects/meme-dealer/telegram-publisher/src/main/java/com/streletsa/memedealer/tgpublisher/model/User.java

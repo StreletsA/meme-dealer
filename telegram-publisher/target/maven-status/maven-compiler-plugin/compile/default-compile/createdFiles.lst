@@ -1,0 +1,11 @@
+com/streletsa/memedealer/tgpublisher/model/Image.class
+com/streletsa/memedealer/tgpublisher/telegram/MemeDealerBotWorker.class
+com/streletsa/memedealer/tgpublisher/subscriber/MemeSubscriber.class
+com/streletsa/memedealer/tgpublisher/config/AppConfiguration.class
+com/streletsa/memedealer/tgpublisher/model/MemeSource.class
+com/streletsa/memedealer/tgpublisher/model/ImageExtension.class
+com/streletsa/memedealer/tgpublisher/Main.class
+com/streletsa/memedealer/tgpublisher/telegram/TgBotWorker.class
+com/streletsa/memedealer/tgpublisher/model/Meme.class
+com/streletsa/memedealer/tgpublisher/model/User.class
+com/streletsa/memedealer/tgpublisher/telegram/TgChatBot.class

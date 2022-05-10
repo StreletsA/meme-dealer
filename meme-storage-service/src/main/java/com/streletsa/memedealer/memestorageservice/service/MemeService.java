@@ -41,6 +41,7 @@ public class MemeService {
         try {
             meme.setApproved(true);
             meme.setTimestamp(System.currentTimeMillis());
+            memeRepository.insert(meme);
             memePublisher.publishMeme(meme);
         } catch (Exception e){
             log.error("Test meme storing error -> {}", e.getMessage());
