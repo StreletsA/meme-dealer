@@ -4,10 +4,7 @@ import com.streletsa.memedealer.memestorageservice.model.Image;
 import com.streletsa.memedealer.memestorageservice.model.ImageExtension;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Element;
-import org.springframework.beans.factory.annotation.Value;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;

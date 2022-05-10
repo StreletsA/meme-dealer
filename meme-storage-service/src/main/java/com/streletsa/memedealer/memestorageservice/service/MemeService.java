@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,16 +32,32 @@ public class MemeService {
     @Value("${saving.images.path}")
     String savingImagesPath;
 
+    @PostConstruct
+    private void init(){
+        memePublisher.start();
+    }
+
+    public void storeMemeWithoutApproving(Meme meme){
+        try {
+            meme.setApproved(true);
+            meme.setTimestamp(System.currentTimeMillis());
+            memePublisher.publishMeme(meme);
+        } catch (Exception e){
+            log.error("Test meme storing error -> {}", e.getMessage());
+        }
+    }
+
     public void storeMeme(Meme meme, @Nullable String token){
         Optional<User> userOptional = userService.getUserByToken(token);
         boolean isApprovedMeme = userOptional.isPresent();
         try {
+            meme.setApproved(isApprovedMeme);
+            meme.setTimestamp(System.currentTimeMillis());
             if (isApprovedMeme){
                 User user = userOptional.get();
                 meme.setApprover(user);
+                memePublisher.publishMeme(meme);
             }
-            meme.setApproved(isApprovedMeme);
-            meme.setTimestamp(System.currentTimeMillis());
 
             memeRepository.insert(meme);
 

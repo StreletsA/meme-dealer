@@ -1,6 +1,5 @@
 package com.streletsa.memedealer.memestorageservice.publisher;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -43,7 +42,7 @@ public class MemePublisher extends Thread{
     public void run(){
         try (Connection connection = connectionFactory.newConnection();
              Channel channel = connection.createChannel()){
-            channel.queueDeclare(rabbitmqQueueName, true, false, false, null);
+            channel.queueDeclare(rabbitmqQueueName, false, false, false, null);
             while (true){
 
                 while (!memeQueue.isEmpty()){
@@ -54,7 +53,7 @@ public class MemePublisher extends Thread{
                 }
             }
         } catch (IOException | TimeoutException e) {
-            log.error("Connection refused. Error -> {}", e.getMessage());
+            log.error("Connection refused. Error -> {}", e.getLocalizedMessage());
             log.error("Reconnecting...");
             run();
         }
@@ -71,6 +70,7 @@ public class MemePublisher extends Thread{
                     MessageProperties.PERSISTENT_TEXT_PLAIN,
                     memeJson.getBytes(StandardCharsets.UTF_8)
             );
+            log.info("Meme published!");
         } catch (IOException e) {
             log.error("Meme publishing ended with error -> {}", e.getMessage());
         }

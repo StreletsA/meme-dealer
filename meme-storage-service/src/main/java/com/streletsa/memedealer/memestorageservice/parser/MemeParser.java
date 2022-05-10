@@ -4,6 +4,7 @@ import com.streletsa.memedealer.memestorageservice.model.Meme;
 import com.streletsa.memedealer.memestorageservice.service.MemeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,6 +12,9 @@ import java.util.List;
 @Slf4j
 @Component
 public abstract class MemeParser extends Thread {
+
+    @Value("${publish.without.approving}")
+    String PUBLISH_WITHOUT_APPROVING;
 
     @Autowired
     MemeService memeService;
@@ -24,7 +28,12 @@ public abstract class MemeParser extends Thread {
             List<Meme> memeList = parseMemes();
             for (Meme meme : memeList) {
                 meme.setApproved(false);
-                memeService.storeMeme(meme);
+
+                if (PUBLISH_WITHOUT_APPROVING.equals("true")) {
+                    memeService.storeMemeWithoutApproving(meme);
+                } else {
+                    memeService.storeMeme(meme);
+                }
             }
             trySleepThread();
         }
