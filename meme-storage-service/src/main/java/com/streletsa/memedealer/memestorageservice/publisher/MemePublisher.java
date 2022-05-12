@@ -5,9 +5,9 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.MessageProperties;
+import com.streletsa.memedealer.memestorageservice.config.ConstantsConfig;
 import com.streletsa.memedealer.memestorageservice.model.Meme;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -20,10 +20,8 @@ import java.util.concurrent.TimeoutException;
 @Component
 public class MemePublisher extends Thread{
 
-    @Value("${rabbitmq.publisher.host}")
-    private String rabbitmqPublisherHost;
-    @Value("${rabbitmq.meme.queue.name}")
-    private String rabbitmqQueueName;
+    private static final String rabbitmqHost = ConstantsConfig.RABBITMQ_HOST;
+    private static final String rabbitmqQueueName = ConstantsConfig.RABBITMQ_QUEUE_NAME;
 
     private final ConnectionFactory connectionFactory;
     private final ConcurrentLinkedQueue<Meme> memeQueue;
@@ -35,7 +33,7 @@ public class MemePublisher extends Thread{
 
     @PostConstruct
     private void init(){
-        connectionFactory.setHost(rabbitmqPublisherHost);
+        connectionFactory.setHost(rabbitmqHost);
     }
 
     @Override
@@ -53,8 +51,9 @@ public class MemePublisher extends Thread{
                 }
             }
         } catch (IOException | TimeoutException e) {
-            log.error("Connection refused. Error -> {}", e.getLocalizedMessage());
+            log.error("Connection error. Host -> {}. Error -> {}", rabbitmqHost, e.getLocalizedMessage());
             log.error("Reconnecting...");
+            trySleepThread(1000);
             run();
         }
     }
@@ -78,6 +77,14 @@ public class MemePublisher extends Thread{
 
     public void publishMeme(Meme meme){
         memeQueue.add(meme);
+    }
+
+    private void trySleepThread(long milliseconds){
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

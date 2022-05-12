@@ -17,7 +17,7 @@ import java.util.concurrent.TimeoutException;
 
 public class MemeSubscriber extends Thread{
 
-    private static final String RABBITMQ_PUBLISHER_HOST = AppConfiguration.RABBITMQ_PUBLISHER_HOST;
+    private static final String RABBITMQ_HOST = AppConfiguration.RABBITMQ_HOST;
     private static final String RABBITMQ_QUEUE_NAME = AppConfiguration.RABBITMQ_QUEUE_NAME;
 
     private final TgChatBot botWorker;
@@ -29,7 +29,7 @@ public class MemeSubscriber extends Thread{
         connectionFactory = new ConnectionFactory();
         memeQueue = new ConcurrentLinkedDeque<>();
 
-        connectionFactory.setHost(RABBITMQ_PUBLISHER_HOST);
+        connectionFactory.setHost(RABBITMQ_HOST);
     }
 
     @Override

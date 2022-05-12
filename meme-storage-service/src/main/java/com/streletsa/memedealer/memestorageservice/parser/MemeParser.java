@@ -1,5 +1,6 @@
 package com.streletsa.memedealer.memestorageservice.parser;
 
+import com.streletsa.memedealer.memestorageservice.config.ConstantsConfig;
 import com.streletsa.memedealer.memestorageservice.model.Meme;
 import com.streletsa.memedealer.memestorageservice.service.MemeService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,8 +14,7 @@ import java.util.List;
 @Component
 public abstract class MemeParser extends Thread {
 
-    @Value("${publish.without.approving}")
-    String PUBLISH_WITHOUT_APPROVING;
+    private static final String PUBLISH_WITHOUT_APPROVING = ConstantsConfig.PUBLISH_WITHOUT_APPROVING;
 
     @Autowired
     MemeService memeService;

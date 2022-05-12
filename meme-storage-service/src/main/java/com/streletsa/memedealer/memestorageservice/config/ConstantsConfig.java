@@ -1,32 +1,47 @@
-package com.streletsa.memedealer.tgpublisher.config;
+package com.streletsa.memedealer.memestorageservice.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
 
 import java.io.InputStream;
 import java.util.Optional;
 import java.util.Properties;
 
 @Slf4j
-public class AppConfiguration {
+@Configuration
+public class ConstantsConfig {
 
     private static final String PROPERTIES_FILE_NAME = "application.properties";
 
     private static Properties systemProps;
     private static Properties resourceProps;
 
-    public static final String BOT_TOKEN;
-    public static final String MEME_DEALER_CHAT_ID;
-    public static final String RABBITMQ_PUBLISHER_HOST;
+    public static final String PUBLISH_WITHOUT_APPROVING;
+
+    public static final String AUTO_SAVE_IMAGES;
+    public static final String SAVING_IMAGES_PATH;
+
+    public static final String RABBITMQ_HOST;
     public static final String RABBITMQ_QUEUE_NAME;
 
-    static{
+    public static final String MONGODB_HOST;
+    public static final String MONGODB_PORT;
+    public static final String MONGODB_DATABASE;
+
+    static {
 
         setProperties();
 
-        BOT_TOKEN = findConstantByPropertyName("bot.token");
-        MEME_DEALER_CHAT_ID = findConstantByPropertyName("meme.dealer.chat.id");
-        RABBITMQ_PUBLISHER_HOST = findConstantByPropertyName("rabbitmq.publisher.host");
+        RABBITMQ_HOST = findConstantByPropertyName("rabbitmq.host");
         RABBITMQ_QUEUE_NAME = findConstantByPropertyName("rabbitmq.queue.name");
+
+        PUBLISH_WITHOUT_APPROVING = findConstantByPropertyName("publish.without.approving");
+        AUTO_SAVE_IMAGES = findConstantByPropertyName("auto.save.images");
+        SAVING_IMAGES_PATH = findConstantByPropertyName("saving.images.path");
+
+        MONGODB_HOST = findConstantByPropertyName("mongodb.host");
+        MONGODB_PORT = findConstantByPropertyName("mongodb.port");
+        MONGODB_DATABASE = findConstantByPropertyName("mongodb.database");
 
     }
 
@@ -43,7 +58,7 @@ public class AppConfiguration {
 
     private static void setResourceProps(){
         try {
-            InputStream is = AppConfiguration.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE_NAME);
+            InputStream is = ConstantsConfig.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE_NAME);
             resourceProps = new Properties();
             resourceProps.load(is);
         } catch (Exception e) {
@@ -58,13 +73,13 @@ public class AppConfiguration {
 
         Optional<String> constantOptional = findEnvironmentVariable(environmentVariableName);
 
-        if (constantOptional.isEmpty()){
-            constantOptional = findSystemProperty(propertyName);
-        }
-
-        if (constantOptional.isEmpty()){
-            constantOptional = findPropertyFromResourceFile(propertyName);
-        }
+//        if (constantOptional.isEmpty()){
+//            constantOptional = findSystemProperty(propertyName);
+//        }
+//
+//        if (constantOptional.isEmpty()){
+//            constantOptional = findPropertyFromResourceFile(propertyName);
+//        }
 
 
         if (constantOptional.isPresent()){

@@ -16,7 +16,7 @@ public class AppConfiguration {
 
     public static final String BOT_TOKEN;
     public static final String MEME_DEALER_CHAT_ID;
-    public static final String RABBITMQ_PUBLISHER_HOST;
+    public static final String RABBITMQ_HOST;
     public static final String RABBITMQ_QUEUE_NAME;
 
     static{
@@ -25,7 +25,7 @@ public class AppConfiguration {
 
         BOT_TOKEN = findConstantByPropertyName("bot.token");
         MEME_DEALER_CHAT_ID = findConstantByPropertyName("meme.dealer.chat.id");
-        RABBITMQ_PUBLISHER_HOST = findConstantByPropertyName("rabbitmq.publisher.host");
+        RABBITMQ_HOST = findConstantByPropertyName("rabbitmq.host");
         RABBITMQ_QUEUE_NAME = findConstantByPropertyName("rabbitmq.queue.name");
 
     }

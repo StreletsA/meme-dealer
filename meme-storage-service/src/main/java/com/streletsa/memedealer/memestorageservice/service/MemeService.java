@@ -1,5 +1,6 @@
 package com.streletsa.memedealer.memestorageservice.service;
 
+import com.streletsa.memedealer.memestorageservice.config.ConstantsConfig;
 import com.streletsa.memedealer.memestorageservice.model.Meme;
 import com.streletsa.memedealer.memestorageservice.model.User;
 import com.streletsa.memedealer.memestorageservice.publisher.MemePublisher;
@@ -20,17 +21,15 @@ import java.util.Optional;
 @Service
 public class MemeService {
 
+    private static final String isNeedToSaveImages = ConstantsConfig.AUTO_SAVE_IMAGES;
+    private static final String savingImagesPath = ConstantsConfig.SAVING_IMAGES_PATH;
+
     @Autowired
     MemeRepository memeRepository;
     @Autowired
     UserService userService;
     @Autowired
     MemePublisher memePublisher;
-
-    @Value("${auto.save.images}")
-    String isNeedToSaveImages;
-    @Value("${saving.images.path}")
-    String savingImagesPath;
 
     @PostConstruct
     private void init(){
@@ -54,14 +53,13 @@ public class MemeService {
         try {
             meme.setApproved(isApprovedMeme);
             meme.setTimestamp(System.currentTimeMillis());
-            if (isApprovedMeme){
+            memeRepository.insert(meme);
+
+            if (isApprovedMeme) {
                 User user = userOptional.get();
                 meme.setApprover(user);
                 memePublisher.publishMeme(meme);
             }
-
-            memeRepository.insert(meme);
-
             if (isNeedToSaveImages.equals("true")){
                 ImageUtils.saveImage(meme.getImage(), savingImagesPath);
             }

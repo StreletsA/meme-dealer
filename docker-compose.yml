@@ -1,0 +1,43 @@
+version: '3.1'
+
+services:
+
+    mongodb:
+        image: mongo
+        restart: always
+        volumes: 
+            - ./data:/data/db
+        
+    rabbitmq:
+        image: rabbitmq:3.10
+        
+    storage:
+        build: meme-storage-service/
+        restart: always
+        depends_on:
+            - mongodb
+            - rabbitmq
+        ports:
+            - 8080:8080
+        environment:
+            - PUBLISH_WITHOUT_APPROVING=true
+            - AUTO_SAVE_IMAGES=false
+            - SAVING_IMAGES_PATH=/
+            - RABBITMQ_HOST=rabbitmq
+            - RABBITMQ_QUEUE_NAME=MEME_QUEUE
+            - MONGODB_HOST=mongodb
+            - MONGODB_PORT=27017
+            - MONGODB_DATABASE=Memes
+    
+    tg_publisher:
+        build: telegram-publisher/
+        restart: always
+        depends_on:
+            - storage
+        environment:
+            - BOT_TOKEN=token
+            - MEME_DEALER_CHAT_ID=chatid
+            - RABBITMQ_HOST=rabbitmq
+            - RABBITMQ_QUEUE_NAME=MEME_QUEUE
+            
+

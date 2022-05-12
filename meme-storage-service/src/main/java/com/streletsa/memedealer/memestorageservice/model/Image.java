@@ -1,8 +1,6 @@
 package com.streletsa.memedealer.memestorageservice.model;
 
 import lombok.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.util.Arrays;
 
