@@ -10,6 +10,7 @@ services:
         
     rabbitmq:
         image: rabbitmq:3.10
+        restart: always
         
     storage:
         build: meme-storage-service/
