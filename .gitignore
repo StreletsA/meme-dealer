@@ -1,3 +1,9 @@
+# Data
+./data/
+
+# Android app
+./android_app/
+
 # My secrets
 *.secrets
 

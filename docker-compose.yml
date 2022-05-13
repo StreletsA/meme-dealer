@@ -29,6 +29,7 @@ services:
             - MONGODB_HOST=mongodb
             - MONGODB_PORT=27017
             - MONGODB_DATABASE=Memes
+            - ADMIN_TOKEN=token
     
     tg_publisher:
         build: telegram-publisher/
