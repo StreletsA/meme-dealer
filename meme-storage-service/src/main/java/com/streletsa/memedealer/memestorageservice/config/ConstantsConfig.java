@@ -13,8 +13,7 @@ public class ConstantsConfig {
 
     private static final String PROPERTIES_FILE_NAME = "application.properties";
 
-    private static Properties systemProps;
-    private static Properties resourceProps;
+    public static final String ADMIN_TOKEN;
 
     public static final String PUBLISH_WITHOUT_APPROVING;
 
@@ -28,9 +27,14 @@ public class ConstantsConfig {
     public static final String MONGODB_PORT;
     public static final String MONGODB_DATABASE;
 
+    private static Properties systemProps;
+    private static Properties resourceProps;
+
     static {
 
         setProperties();
+
+        ADMIN_TOKEN = findConstantByPropertyName("admin.token");
 
         RABBITMQ_HOST = findConstantByPropertyName("rabbitmq.host");
         RABBITMQ_QUEUE_NAME = findConstantByPropertyName("rabbitmq.queue.name");
@@ -73,13 +77,13 @@ public class ConstantsConfig {
 
         Optional<String> constantOptional = findEnvironmentVariable(environmentVariableName);
 
-//        if (constantOptional.isEmpty()){
-//            constantOptional = findSystemProperty(propertyName);
-//        }
-//
-//        if (constantOptional.isEmpty()){
-//            constantOptional = findPropertyFromResourceFile(propertyName);
-//        }
+        if (constantOptional.isEmpty()){
+            constantOptional = findSystemProperty(propertyName);
+        }
+
+        if (constantOptional.isEmpty()){
+            constantOptional = findPropertyFromResourceFile(propertyName);
+        }
 
 
         if (constantOptional.isPresent()){
@@ -110,10 +114,7 @@ public class ConstantsConfig {
             e.printStackTrace();
         }
 
-        if (environmentVariable == null){
-            log.info("Environment variable with name " + environmentVariableName + " not found");
-        }
-        else{
+        if (environmentVariable != null){
             environmentVariableOptional = Optional.of(environmentVariable);
         }
 
@@ -123,25 +124,13 @@ public class ConstantsConfig {
 
     private static Optional<String> findSystemProperty(String propertyName){
 
-        Optional<String> propertyOptional = findProperty(systemProps, propertyName);
-
-        if (propertyOptional.isEmpty()){
-            log.info("System property with name " + propertyName + " not found");
-        }
-
-        return propertyOptional;
+        return findProperty(systemProps, propertyName);
 
     }
 
     private static Optional<String> findPropertyFromResourceFile(String propertyName){
 
-        Optional<String> propertyOptional = findProperty(resourceProps, propertyName);
-
-        if (propertyOptional.isEmpty()){
-            log.info("Property with name " + propertyName + " not found in resource file");
-        }
-
-        return propertyOptional;
+        return findProperty(resourceProps, propertyName);
 
     }
 

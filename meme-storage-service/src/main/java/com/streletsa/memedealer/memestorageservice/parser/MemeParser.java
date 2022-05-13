@@ -30,7 +30,7 @@ public abstract class MemeParser extends Thread {
                 meme.setApproved(false);
 
                 if (PUBLISH_WITHOUT_APPROVING.equals("true")) {
-                    memeService.storeMemeWithoutApproving(meme);
+                    memeService.storeAutomaticallyApprovedMeme(meme);
                 } else {
                     memeService.storeMeme(meme);
                 }

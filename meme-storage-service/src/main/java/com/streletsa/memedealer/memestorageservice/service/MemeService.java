@@ -36,7 +36,7 @@ public class MemeService {
         memePublisher.start();
     }
 
-    public void storeMemeWithoutApproving(Meme meme){
+    public void storeAutomaticallyApprovedMeme(Meme meme){
         try {
             meme.setApproved(true);
             meme.setTimestamp(System.currentTimeMillis());
