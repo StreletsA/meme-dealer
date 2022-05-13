@@ -20,6 +20,11 @@ public class MemeController {
         return memeService.getAllMemes(token);
     }
 
+    @GetMapping("/memes/unapproved")
+    public List<Meme> getUnapprovedMemes(@RequestHeader("Token") String token){
+        return memeService.getAllUnapprovedMemes();
+    }
+
     @PostMapping("/memes")
     public void postMemeList(@RequestHeader("Token") String token, @RequestBody List<Meme> memeList){
         memeService.storeMemeList(memeList, token);

@@ -90,6 +90,17 @@ public class MemeService {
         return memeList;
     }
 
+    public List<Meme> getAllUnapprovedMemes(){
+        List<Meme> memeList = new ArrayList<>();
+        try {
+            memeList = memeRepository.findByApproved(false);
+        } catch (Exception e){
+            log.error("Meme list reading error -> {}", e.getMessage());
+        }
+
+        return memeList;
+    }
+
     public List<Meme> getAllMemes(String userToken){
 
         List<Meme> memeList = new ArrayList<>();

@@ -34,6 +34,9 @@ public class UserService {
     }
 
     public Optional<User> getUserByToken(@Nullable String userToken){
+        if (userToken == null){
+            return Optional.empty();
+        }
         return userRepository.findByToken(userToken);
     }
 
