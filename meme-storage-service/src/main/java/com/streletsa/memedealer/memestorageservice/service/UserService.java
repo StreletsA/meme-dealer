@@ -40,6 +40,10 @@ public class UserService {
         return userRepository.findByToken(userToken);
     }
 
+    public boolean isValidToken(String token){
+        return getUserByToken(token).isPresent();
+    }
+
     public void addUser(User user){
         userRepository.insert(user);
     }

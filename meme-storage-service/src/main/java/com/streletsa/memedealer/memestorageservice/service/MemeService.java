@@ -98,7 +98,22 @@ public class MemeService {
         try {
             memeList = memeRepository.findByApproved(false);
         } catch (Exception e){
-            log.error("Meme list reading error -> {}", e.getMessage());
+            log.error("Unapproved meme list reading error -> {}", e.getMessage());
+        }
+
+        return memeList;
+    }
+
+    public List<Meme> getUnapprovedMemesWithLimit(Integer limit){
+        List<Meme> memeList = new ArrayList<>();
+        try {
+            memeList = memeRepository
+                    .findByApproved(false)
+                    .stream()
+                    .limit(limit)
+                    .collect(Collectors.toList());
+        } catch (Exception e){
+            log.error("Unapproved meme list reading with limit error -> {}", e.getMessage());
         }
 
         return memeList;

@@ -2,6 +2,7 @@ package com.streletsa.memedealer.memestorageservice.controller;
 
 import com.streletsa.memedealer.memestorageservice.model.Meme;
 import com.streletsa.memedealer.memestorageservice.service.MemeService;
+import com.streletsa.memedealer.memestorageservice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,31 +16,45 @@ public class MemeController {
 
     @Autowired
     MemeService memeService;
-
-    @GetMapping("/memes")
-    public List<Meme> getAllMemes(@RequestHeader("Token") String token){
-        return memeService.getAllMemes(token);
-    }
+    @Autowired
+    UserService userService;
 
     @GetMapping("/memes")
     public List<Meme> getMemesWithLimitAndTimeOffset(
             @RequestHeader("Token") String token,
-            @RequestParam("limit") Integer limit,
+            @RequestParam(name = "limit", required = false) Integer limit,
             @RequestParam(name = "time_offset", required = false) Long timeOffset
     ){
         List<Meme> memes = new ArrayList<>();
-        if (timeOffset == null){
-            memes = memeService.getMemesWithLimit(limit);
-        }
-        else{
-            memes = memeService.getMemesWhereTimestampGreaterThan(timeOffset, limit);
+        if (userService.isValidToken(token)){
+            if (limit == null){
+                memes = memeService.getAllMemes(token);
+            }
+            else if (timeOffset == null){
+                memes = memeService.getMemesWithLimit(limit);
+            }
+            else{
+                memes = memeService.getMemesWhereTimestampGreaterThan(timeOffset, limit);
+            }
         }
         return memes;
     }
 
     @GetMapping("/memes/unapproved")
-    public List<Meme> getUnapprovedMemes(@RequestHeader("Token") String token){
-        return memeService.getAllUnapprovedMemes();
+    public List<Meme> getUnapprovedMemes(
+            @RequestHeader("Token") String token,
+            @RequestParam(name = "limit", required = false) Integer limit
+    ){
+        List<Meme> memes = new ArrayList<>();
+        if (userService.isValidToken(token)){
+            if (limit == null){
+                memes = memeService.getUnapprovedMemesWithLimit(limit);
+            }
+            else {
+                memes = memeService.getAllUnapprovedMemes();
+            }
+        }
+        return memes;
     }
 
     @PostMapping("/memes")
