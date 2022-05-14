@@ -30,11 +30,11 @@ public class MemeService {
     UserService userService;
     @Autowired
     MemePublisher memePublisher;
-    @Autowired
-    MemeLifeMonitor memeLifeMonitor;
 
     @PostConstruct
     private void init(){
+        MemeLifeMonitor memeLifeMonitor = new MemeLifeMonitor(this);
+
         memePublisher.start();
         memeLifeMonitor.start();
     }

@@ -36,16 +36,13 @@ public class MemeLifeMonitor extends Thread{
     }
 
     private List<Meme> getMemesUnapprovedLongTime(){
-        List<Meme> memesUnapprovedLongTime = new ArrayList<>();
         List<Meme> allUnapprovedMemes = memeService.getAllUnapprovedMemes();
         long timestampNow = System.currentTimeMillis();
 
-        memesUnapprovedLongTime = allUnapprovedMemes
+        return allUnapprovedMemes
                 .stream()
                 .filter(meme -> timestampNow - meme.getTimestamp() > TIME_FOR_MEME_APPROVING)
                 .collect(Collectors.toList());
-
-        return memesUnapprovedLongTime;
     }
 
     private void trySleepThread(){
