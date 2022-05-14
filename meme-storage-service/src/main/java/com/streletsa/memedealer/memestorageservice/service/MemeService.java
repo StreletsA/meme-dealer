@@ -122,7 +122,7 @@ public class MemeService {
     }
 
     public List<Meme> getMemesWhereTimestampGreaterThan(Long timestamp){
-        return memeRepository.findByTimestampGreaterThanEqualByOrderByTimestampDesc(timestamp);
+        return memeRepository.findByTimestampGreaterThanEqualOrderByTimestampDesc(timestamp);
     }
 
     public List<Meme> getMemesWhereTimestampGreaterThan(Long timestamp, Integer limit){
