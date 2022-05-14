@@ -113,7 +113,7 @@ public class MemeService {
         }
 
         try {
-            memeList = memeRepository.findAllOrderByTimestampDesc();
+            memeList = memeRepository.findAllByOrderByTimestampDesc();
         } catch (Exception e){
             log.error("Meme list reading error -> {}", e.getMessage());
         }
@@ -122,7 +122,7 @@ public class MemeService {
     }
 
     public List<Meme> getMemesWhereTimestampGreaterThan(Long timestamp){
-        return memeRepository.findByTimestampGreaterThanEqualOrderByTimestampDesc(timestamp);
+        return memeRepository.findByTimestampGreaterThanEqualByOrderByTimestampDesc(timestamp);
     }
 
     public List<Meme> getMemesWhereTimestampGreaterThan(Long timestamp, Integer limit){
@@ -133,7 +133,7 @@ public class MemeService {
     }
 
     public List<Meme> getMemesWithLimit(long limit){
-        List<Meme> memeList = memeRepository.findAllOrderByTimestampDesc()
+        List<Meme> memeList = memeRepository.findAllByOrderByTimestampDesc()
                 .stream()
                 .limit(limit)
                 .collect(Collectors.toList());
