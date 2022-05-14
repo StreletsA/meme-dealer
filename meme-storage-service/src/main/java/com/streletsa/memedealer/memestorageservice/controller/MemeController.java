@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,6 +19,22 @@ public class MemeController {
     @GetMapping("/memes")
     public List<Meme> getAllMemes(@RequestHeader("Token") String token){
         return memeService.getAllMemes(token);
+    }
+
+    @GetMapping("/memes")
+    public List<Meme> getMemesWithLimitAndTimeOffset(
+            @RequestHeader("Token") String token,
+            @RequestParam("limit") Integer limit,
+            @RequestParam(name = "time_offset", required = false) Long timeOffset
+    ){
+        List<Meme> memes = new ArrayList<>();
+        if (timeOffset == null){
+            memes = memeService.getMemesWithLimit(limit);
+        }
+        else{
+            memes = memeService.getMemesWhereTimestampGreaterThan(timeOffset, limit);
+        }
+        return memes;
     }
 
     @GetMapping("/memes/unapproved")

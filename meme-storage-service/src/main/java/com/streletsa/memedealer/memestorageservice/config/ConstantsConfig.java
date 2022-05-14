@@ -16,6 +16,7 @@ public class ConstantsConfig {
     public static final String ADMIN_TOKEN;
 
     public static final String PUBLISH_WITHOUT_APPROVING;
+    public static final String TIME_FOR_MEME_APPROVING;
 
     public static final String AUTO_SAVE_IMAGES;
     public static final String SAVING_IMAGES_PATH;
@@ -40,6 +41,8 @@ public class ConstantsConfig {
         RABBITMQ_QUEUE_NAME = findConstantByPropertyName("rabbitmq.queue.name");
 
         PUBLISH_WITHOUT_APPROVING = findConstantByPropertyName("publish.without.approving");
+        TIME_FOR_MEME_APPROVING = findConstantByPropertyName("time.for.meme.approving");
+
         AUTO_SAVE_IMAGES = findConstantByPropertyName("auto.save.images");
         SAVING_IMAGES_PATH = findConstantByPropertyName("saving.images.path");
 

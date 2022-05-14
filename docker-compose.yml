@@ -30,6 +30,7 @@ services:
             - MONGODB_PORT=27017
             - MONGODB_DATABASE=Memes
             - ADMIN_TOKEN=token
+            - TIME_FOR_MEME_APPROVING=60000
     
     tg_publisher:
         build: telegram-publisher/

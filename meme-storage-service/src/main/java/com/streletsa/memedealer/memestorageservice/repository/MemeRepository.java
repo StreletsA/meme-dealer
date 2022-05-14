@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface MemeRepository extends MongoRepository<Meme, String> {
     List<Meme> findByApproved(Boolean approved);
+    List<Meme> findAllOrderByTimestampDesc();
+    List<Meme> findByTimestampGreaterThanEqualOrderByTimestampDesc(Long timestamp);
 }

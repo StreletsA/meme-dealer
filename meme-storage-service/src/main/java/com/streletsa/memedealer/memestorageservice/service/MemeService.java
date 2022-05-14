@@ -8,7 +8,6 @@ import com.streletsa.memedealer.memestorageservice.repository.MemeRepository;
 import com.streletsa.memedealer.memestorageservice.utils.ImageUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +15,7 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -30,10 +30,13 @@ public class MemeService {
     UserService userService;
     @Autowired
     MemePublisher memePublisher;
+    @Autowired
+    MemeLifeMonitor memeLifeMonitor;
 
     @PostConstruct
     private void init(){
         memePublisher.start();
+        memeLifeMonitor.start();
     }
 
     public void storeAutomaticallyApprovedMeme(Meme meme){
@@ -110,7 +113,7 @@ public class MemeService {
         }
 
         try {
-            memeList = memeRepository.findAll();
+            memeList = memeRepository.findAllOrderByTimestampDesc();
         } catch (Exception e){
             log.error("Meme list reading error -> {}", e.getMessage());
         }
@@ -118,9 +121,52 @@ public class MemeService {
         return memeList;
     }
 
+    public List<Meme> getMemesWhereTimestampGreaterThan(Long timestamp){
+        return memeRepository.findByTimestampGreaterThanEqualOrderByTimestampDesc(timestamp);
+    }
+
+    public List<Meme> getMemesWhereTimestampGreaterThan(Long timestamp, Integer limit){
+        return getMemesWithLimit(
+                getMemesWhereTimestampGreaterThan(timestamp),
+                limit
+        );
+    }
+
+    public List<Meme> getMemesWithLimit(long limit){
+        List<Meme> memeList = memeRepository.findAllOrderByTimestampDesc()
+                .stream()
+                .limit(limit)
+                .collect(Collectors.toList());
+        return memeList;
+    }
+
+    public List<Meme> getMemesWithLimit(List<Meme> memeList, long limit){
+        return memeList
+                .stream()
+                .limit(limit)
+                .collect(Collectors.toList());
+    }
+
     public void updateMeme(Meme meme){
         memeRepository.deleteById(meme.getId());
         memeRepository.insert(meme);
+    }
+
+    public void deleteMemeList(List<Meme> memeList){
+        for (Meme meme : memeList){
+            String memeId = meme.getId();
+            deleteMemeById(memeId);
+        }
+    }
+
+    public void deleteMemeById(String id){
+        memeRepository.deleteById(id);
+    }
+
+    public void approveMemeList(List<String> memeIdList, String userToken){
+        for (String memeId : memeIdList){
+            approveMeme(memeId, userToken);
+        }
     }
 
     public void approveMeme(String id, String userToken){
@@ -137,16 +183,6 @@ public class MemeService {
 
             updateMeme(meme);
             memePublisher.publishMeme(meme);
-        }
-    }
-
-    public void deleteMemeById(String id){
-        memeRepository.deleteById(id);
-    }
-
-    public void approveMemeList(List<String> memeIdList, String userToken){
-        for (String memeId : memeIdList){
-            approveMeme(memeId, userToken);
         }
     }
 
